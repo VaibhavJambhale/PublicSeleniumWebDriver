@@ -1,0 +1,107 @@
+import java.io.File;
+
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class Adminportal {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		System.setProperty("webdriver.chrome.driver",
+				"C:\\Users\\acer\\Desktop\\Tools\\chromedriver_win32\\chromedriver.exe");
+		WebDriver driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		login(driver);
+		// addCategory(driver);
+		addNewAgent(driver);
+
+	}
+
+	public static void login(WebDriver driver) {
+		driver.get("https://devapi.money24x7.co.in/login");
+		System.out.println(driver.getCurrentUrl());
+		driver.findElement(By.id("email")).sendKeys("superadmin@money24x7.co.in");
+		driver.findElement(By.id("password")).sendKeys("m24x7_321");
+		driver.findElement(By.className("btn")).click();
+		System.out.print("Login Successfully");
+
+	}
+
+	public static void addCategory(WebDriver driver) {
+		driver.findElement(By.xpath("//*[@id='side-menu']/li[3]/a")).click();
+		driver.findElement(By.linkText("Category")).click();
+		driver.findElement(By.id("addcat")).click();
+		driver.switchTo().activeElement();
+		System.out.println("frame found");
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("categoryName")));
+		driver.findElement(By.name("categoryName")).sendKeys("DEBT");
+		driver.findElement(By.id("description")).sendKeys("Refered");
+		driver.findElement(By.xpath("//*[@id='active']")).click();
+		driver.findElement(By.xpath("//*[@id='active']/option[1]")).click();
+		driver.findElement(By.id("saveBtn")).click();
+		System.out.println("New Category Added");
+	}
+
+	public static void addNewAgent(WebDriver driver) {
+		driver.findElement(By.xpath("//*[@id='side-menu']/li[27]/a")).click();
+		driver.findElement(By.xpath("//*[@id='side-menu']/li[27]/ul/li/a")).click();
+		driver.findElement(By.id("addAgentBtn")).click();
+		driver.switchTo().activeElement();
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+
+		WebElement profileImage, PanImg, AdharImg, chequeleaf;
+
+		profileImage = driver.findElement(By.name("profileImageFile"));
+		profileImage.sendKeys("C:\\Users\\acer\\Pictures\\Screenshots\\Screenshot (1).png");
+
+		WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("agentName")));
+		driver.findElement(By.id("agentName")).sendKeys("Aniket");
+		driver.findElement(By.name("email")).sendKeys("vaibhav@money24x7.co.in");
+		driver.findElement(By.id("agentMobile")).sendKeys("9665450945");
+		driver.findElement(By.id("dob")).sendKeys("15/08/1994");
+		driver.findElement(By.xpath("//*[@id='addAgentForm']/div[3]/div[2]/div/select")).click();
+		driver.findElement(By.xpath("//*[@id='addAgentForm']/div[3]/div[2]/div/select/option[2]")).click();
+		driver.findElement(By.id("panNo")).sendKeys("BHVPJ4650S");
+		driver.findElement(By.name("aadharNo")).sendKeys("1234567890");
+		driver.findElement(By.id("currentAddress")).sendKeys("Mumbai");
+		driver.findElement(By.id("permanentAddress")).sendKeys("Pune");
+		driver.findElement(By.id("accountNo")).sendKeys("01171001100232");
+		driver.findElement(By.name("ifscCode")).sendKeys("BKID0000117");
+
+		PanImg = driver.findElement(By.name("panImageFile"));
+		PanImg.sendKeys("C:\\Users\\acer\\Pictures\\Screenshots\\Screenshot (1).png");
+
+		AdharImg = driver.findElement(By.name("aadharImageFile"));
+		AdharImg.sendKeys("C:\\Users\\acer\\Pictures\\Screenshots\\Screenshot (2).png");
+
+		chequeleaf = driver.findElement(By.name("chequeImageFile"));
+		chequeleaf.sendKeys("C:\\Users\\acer\\Pictures\\Screenshots\\Screenshot (3).png");
+
+		driver.findElement(By.id("saveAgentBtn")).click();
+		System.out.println("New Agent Added successfully !!!");
+
+		TakesScreenshot scrShot = ((TakesScreenshot) driver);
+		File SrcFile = scrShot.getScreenshotAs(OutputType.FILE);
+
+	}
+
+	// log out functionality
+	public static void logOut(WebDriver driver) {
+		driver.findElement(By.xpath("//*[@id='wrapper']/nav/ul/li[4]/a")).click();
+		driver.findElement(By.xpath("//*[@id='wrapper']/nav/ul/li[4]/ul/li[4]/a")).click();
+		driver.get("https://devapi.money24x7.co.in/login");
+		System.out.println("Log Out Successfully");
+
+	}
+
+}
